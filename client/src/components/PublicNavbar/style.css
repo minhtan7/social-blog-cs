@@ -1,0 +1,26 @@
+#dropdown-basic::after {
+  display: none;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+}
+
+.search-bar {
+  width: 400px;
+  background-color: var(--bg-primary);
+}
+
+.nav-icon {
+  font-size: 1rem;
+  color: black;
+  border-radius: 3rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--bg-primary);
+}
+
+.nav-icon:hover {
+  background-color: #dae0e5!important;
+}
+
+.dropdown-menu-right {
+  border: none;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+}

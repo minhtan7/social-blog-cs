@@ -1,0 +1,18 @@
+.sidebar-button {
+  background-color: var(--bg-primary);
+}
+
+span {
+  font-size: 1.5rem;
+}
+
+.posts-container {
+  height: 100vh;
+  padding-top: 1em;
+  overflow-y: scroll;
+}
+
+.list-group-item {
+  display: flex;
+  padding-inline-start: 0%;
+}

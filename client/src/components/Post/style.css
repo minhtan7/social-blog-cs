@@ -1,0 +1,25 @@
+.card-body {
+  padding: 0rem;
+}
+
+.rounded-circle {
+  width: 3rem;
+  height: 3rem;
+}
+
+.action-icon {
+  color: grey;
+}
+
+.comment-bubble {
+  padding: 1rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  display: inline-block;
+	-webkit-border-radius: 1rem;
+  background-color: var(--bg-primary);
+}
+
+.comment-bubble > p {
+  margin-bottom: 0rem;
+}

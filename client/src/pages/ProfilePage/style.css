@@ -1,0 +1,38 @@
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero {
+  background-color: #D3D3D3; /* For browsers that do not support gradients */
+  background-image: linear-gradient(#D3D3D3, white);
+}
+
+.img-fluid {
+  top: -10rem;
+  border-radius: 1%;
+}
+
+.cover-profile-photo {
+  width: 10rem;
+  height: 10rem;
+  bottom: 5rem;
+}
+
+.profile-nav {
+  z-index: 1;
+  top: 4.5rem;
+  height: 5rem;
+  font-size: 20px;
+  position: sticky;
+  position: -webkit-sticky;
+}
+
+.profile-content {
+  min-height: 80vh;
+}
+
+.posts-col {
+  overflow-y: scroll;
+}

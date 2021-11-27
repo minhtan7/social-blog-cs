@@ -1,0 +1,27 @@
+.button {
+  background-color: var(--button-primary);
+}
+
+p.header {
+  width: 500px;
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: normal;
+  font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+}
+
+hr {
+  width: 100%;
+}
+
+p.footer {
+  font-size: 1rem;
+}
+
+.p-modal {
+  font-size: 1rem;
+}
+
+.p-terms {
+  font-size: 0.7rem;
+}
