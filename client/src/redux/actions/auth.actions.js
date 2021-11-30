@@ -89,7 +89,7 @@ const getCurrentUser = (accessToken) => async (dispatch) => {
   }
   try {
     const res = await api.get("/users/me");
-    dispatch({ type: types.GET_CURRENT_USER_SUCCESS, payload: res.data.data });
+    dispatch({ type: types.GET_CURRENT_USER_SUCCESS, payload: res.data });
   } catch (error) {
     dispatch({ type: types.GET_CURRENT_USER_FAILURE, payload: error });
   }

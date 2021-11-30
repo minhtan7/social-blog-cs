@@ -39,7 +39,7 @@ const AllRoutes = () => {
     <Routes>
       <Route path="/" element={<PublicLayout/>} >
         <Route exact path="/auth" element={<AuthPage/>} />
-        <Route exact path="/profile" element={<PrivateRoute>
+        <Route exact path="/:name" element={<PrivateRoute>
           <ProfilePage/>
         </PrivateRoute>} />
         <Route  path="/" element={<HomePage/>} />

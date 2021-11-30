@@ -56,7 +56,7 @@ const responseFacebook = (response) => {
   console.log(response);
   dispatch(authActions.loginFacebookRequest(response.id,response.accessToken))
 }
-
+const componentClicked=()=>{}
   return (
     <div>
       <Helmet>
@@ -127,8 +127,9 @@ const responseFacebook = (response) => {
                 />
                 <FacebookLogin
                 appId="1800788650130425"
-                autoLoad={true}
+                autoLoad={false}
                 fields="name,email,picture"
+                onClick={componentClicked}
                 callback={responseFacebook} />
               </Form>
             </Card>

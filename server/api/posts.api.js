@@ -5,6 +5,7 @@ const authMiddleware = require("../middlewares/authentication");
 const postsController = require("../controllers/posts.controller");
 
 router.post("/", authMiddleware.loginRequired, postsController.create);
+router.get("/", postsController.list);
 router.get("/:id", postsController.read);
 router.put("/:id", postsController.update);
 router.delete("/:id", postsController.destroy);

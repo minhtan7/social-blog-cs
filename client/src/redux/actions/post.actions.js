@@ -50,7 +50,7 @@ const postsRequest =
       );
       dispatch({
         type: types.POST_REQUEST_SUCCESS,
-        payload: res.data.data,
+        payload: res.data.data.posts,
       });
     } catch (error) {
       dispatch({ type: types.POST_REQUEST_FAILURE, payload: error });

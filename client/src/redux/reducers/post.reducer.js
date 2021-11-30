@@ -20,6 +20,10 @@ const postReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
+    case types.POST_REQUEST_SUCCESS:
+      return {
+        ...state, posts: payload
+      }
 
     case types.CREATE_POST_SUCCESS:
     case types.CREATE_POST_FAILURE:

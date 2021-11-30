@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Row, Col, Nav, Button, Container, ButtonGroup } from "react-bootstrap";
 
 import "./style.css";
 
 import Composer from "../../components/Composer/Composer";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../redux/actions";
 
 export default function ProfilePage() {
+  const user = useSelector(state => state.auth.user)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    //function to get data of the current user, using the token in the local storage
+    //api to get current user
+    dispatch(authActions.getCurrentUser())
+  }, [])
+
   return (
     <div>
       <Row className="centered hero">
@@ -22,6 +32,7 @@ export default function ProfilePage() {
               className="position-absolute rounded-circle cover-profile-photo"
               src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
             />
+            <h3>{user.name}</h3>
           </div>
         </Container>
         <hr className="w-75" />

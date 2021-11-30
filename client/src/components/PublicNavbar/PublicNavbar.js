@@ -26,22 +26,22 @@ const PublicNavbar = () => {
 
   const authLinks = (
     <Nav>
-      <Link href="/PrimeTimeTran">
+      <Link to="/tan">
         <div className="nav-icon">
           <FontAwesomeIcon icon="user" size="lg" />
         </div>
       </Link>
-      <Link href="#create">
+      <Link to="/create">
         <div className="nav-icon">
           <FontAwesomeIcon icon={"plus"} size="lg" />
         </div>
       </Link>
-      <Link href="#messages">
+      <Link to="/messages">
         <div className="nav-icon">
           <FontAwesomeIcon icon={["fab", "facebook-messenger"]} size="lg" />
         </div>
       </Link>
-      <Link href="#notificaions">
+      <Link to="/notificaions">
         <div className="nav-icon">
           <FontAwesomeIcon icon="bell" size="lg" />
         </div>
@@ -55,7 +55,7 @@ const PublicNavbar = () => {
           </div>
         }
       >
-        <NavDropdown.Item href="#action/3.1">Loi V Tran</NavDropdown.Item>
+        <NavDropdown.Item href="action/3.1">Loi V Tran</NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item onClick={handleLogout} href="#action/3.4">
           Log out
@@ -66,13 +66,10 @@ const PublicNavbar = () => {
 
   const publicLinks = (
     <Nav>
-      <Link as={Link} to="/auth" >
+      <Link  to="/auth" >
         <FontAwesomeIcon icon="registered" size="sm" /> Register
       </Link>
-      <Link as={Link} to="/auth">
-        <FontAwesomeIcon icon="sign-in-alt" size="sm" /> Login
-      </Link>
-      <Link as={Link} to="/profile">
+      <Link  to="/auth">
         <FontAwesomeIcon icon="sign-in-alt" size="sm" /> Login
       </Link>
     </Nav>
