@@ -26,26 +26,26 @@ const PublicNavbar = () => {
 
   const authLinks = (
     <Nav>
-      <Nav.Link href="/PrimeTimeTran">
+      <Link href="/PrimeTimeTran">
         <div className="nav-icon">
           <FontAwesomeIcon icon="user" size="lg" />
         </div>
-      </Nav.Link>
-      <Nav.Link href="#create">
+      </Link>
+      <Link href="#create">
         <div className="nav-icon">
           <FontAwesomeIcon icon={"plus"} size="lg" />
         </div>
-      </Nav.Link>
-      <Nav.Link href="#messages">
+      </Link>
+      <Link href="#messages">
         <div className="nav-icon">
           <FontAwesomeIcon icon={["fab", "facebook-messenger"]} size="lg" />
         </div>
-      </Nav.Link>
-      <Nav.Link href="#notificaions">
+      </Link>
+      <Link href="#notificaions">
         <div className="nav-icon">
           <FontAwesomeIcon icon="bell" size="lg" />
         </div>
-      </Nav.Link>
+      </Link>
       <NavDropdown
         alignRight
         id="dropdown-basic"
@@ -66,12 +66,15 @@ const PublicNavbar = () => {
 
   const publicLinks = (
     <Nav>
-      <Nav.Link as={Link} to="/auth">
+      <Link as={Link} to="/auth" >
         <FontAwesomeIcon icon="registered" size="sm" /> Register
-      </Nav.Link>
-      <Nav.Link as={Link} to="/auth">
+      </Link>
+      <Link as={Link} to="/auth">
         <FontAwesomeIcon icon="sign-in-alt" size="sm" /> Login
-      </Nav.Link>
+      </Link>
+      <Link as={Link} to="/profile">
+        <FontAwesomeIcon icon="sign-in-alt" size="sm" /> Login
+      </Link>
     </Nav>
   );
 

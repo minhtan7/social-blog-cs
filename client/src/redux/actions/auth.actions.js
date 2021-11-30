@@ -18,10 +18,10 @@ const loginRequest = (email, password) => async (dispatch) => {
   }
 };
 
-const loginFacebookRequest = (access_token) => async (dispatch) => {
+const loginFacebookRequest = (userId,access_token) => async (dispatch) => {
   dispatch({ type: types.LOGIN_FACEBOOK_REQUEST, payload: null });
   try {
-    const res = await api.post("/auth/login/facebook", { access_token });
+    const res = await api.post("/auth/login/facebook", { userId, access_token });
     const name = res.data.data.user.name;
     toast.success(`Welcome ${name}`);
     dispatch({ type: types.LOGIN_FACEBOOK_SUCCESS, payload: res.data.data });
@@ -32,10 +32,10 @@ const loginFacebookRequest = (access_token) => async (dispatch) => {
   }
 };
 
-const loginGoogleRequest = (access_token) => async (dispatch) => {
+const loginGoogleRequest = (idToken) => async (dispatch) => {
   dispatch({ type: types.LOGIN_GOOGLE_REQUEST, payload: null });
   try {
-    const res = await api.post("/auth/login/google", { access_token });
+    const res = await api.post("/auth/login/google", { idToken });
     const name = res.data.data.user.name;
     toast.success(`Welcome ${name}`);
     dispatch({ type: types.LOGIN_GOOGLE_SUCCESS, payload: res.data.data });

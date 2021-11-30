@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link, Redirect } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 import {
   Col,
@@ -19,7 +21,7 @@ import { authActions } from "../../redux/actions";
 
 import Footer from "../../components/Footer";
 
-export default function RegisterPage() {
+export default function AuthPage() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
@@ -39,8 +41,21 @@ export default function RegisterPage() {
   const onChange = (e) => {
     setUser({ ...user, [e.target.id]: e.target.value });
   };
+  const navigate = useNavigate()
+  const location = useLocation()
+  let from = location.state?.from?.pathname || "/"
+  if (isAuthenticated) {
+    navigate(from, {replace:true})
+  }
 
-  if (isAuthenticated) return <Redirect to="/" />;
+  const responseGoogle = (response) => {
+    console.log(response);
+    dispatch(authActions.loginGoogleRequest(response.tokenId))
+}
+const responseFacebook = (response) => {
+  console.log(response);
+  dispatch(authActions.loginFacebookRequest(response.id,response.accessToken))
+}
 
   return (
     <div>
@@ -103,6 +118,18 @@ export default function RegisterPage() {
                 >
                   Create an account
                 </Button>
+                <GoogleLogin
+                  clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+                  buttonText="Login"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={'single_host_origin'}
+                />
+                <FacebookLogin
+                appId="1800788650130425"
+                autoLoad={true}
+                fields="name,email,picture"
+                callback={responseFacebook} />
               </Form>
             </Card>
           </Col>

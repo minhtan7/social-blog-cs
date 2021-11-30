@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Routes from "./routes";
+import AllRoutes from "./routes";
 
 import './config/theme.css'
 import './index.css'
@@ -85,7 +85,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Routes />
+        <AllRoutes />
       </Router>
     </div>
   );

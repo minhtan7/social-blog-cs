@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Row, Col, Button, ButtonGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -50,7 +50,7 @@ export default function HomePage() {
   useEffect(() => {
   }, []);
 
-  if (!isAuthenticated) return <Redirect to="/auth" />;
+  // if (!isAuthenticated) return <Navigate to="/auth" />;
 
   return (
     <Row>

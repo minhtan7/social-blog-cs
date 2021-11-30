@@ -18,27 +18,29 @@ const userSchema = Schema(
   }
 );
 
-userSchema.statics.findOrCreate = function findOrCreate(profile, cb) {
-  var userObj = new this();
-  this.findOne({ email: profile.email }, async function (err, result) {
-    if (!result) {
+userSchema.statics.findOrCreate = async (profile)=>{
+  try {
+    let user = await User.findOne({ email: profile.email })
+    if (!user) {
       let newPassword =
-        profile.password || "" + Math.floor(Math.random() * 100000000);
+        profile.password || "123";
       const salt = await bcrypt.genSalt(10);
       newPassword = await bcrypt.hash(newPassword, salt);
 
-      userObj.name = profile.name;
-      userObj.email = profile.email;
-      userObj.password = newPassword;
-      userObj.googleId = profile.googleId;
-      userObj.facebookId = profile.facebookId;
-      userObj.avatarUrl = profile.avatarUrl;
-      userObj.save(cb);
-    } else {
-      cb(err, result);
+      user = await User.create({
+        name: profile.name,
+        email: profile.email,
+        password: newPassword,
+        avatarUrl: profile.avatarUrl,
+        googleId: profile.googleId,
+        facebookId: profile.facebookId,
+      })
     }
-  });
-};
+    return user
+  } catch(err){
+    console.log(err)
+  }
+}
 
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();

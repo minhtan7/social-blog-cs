@@ -1,13 +1,13 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
 export default function NotFoundPage() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  if (!isAuthenticated) return <Redirect to="/" />;
+  if (!isAuthenticated) return <Navigate to="/" />;
   return (
     <Container
       fluid
