@@ -11,6 +11,26 @@ const authController = {};
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
+function toSlug(str) {
+	// Chuyển hết sang chữ thường
+	str = str.toLowerCase();     
+	// xóa dấu
+	str = str
+		.normalize('NFD') // chuyển chuỗi sang unicode tổ hợp
+		.replace(/[\u0300-\u036f]/g, ''); // xóa các ký tự dấu sau khi tách tổ hợp
+	// Thay ký tự đĐ
+	str = str.replace(/[đĐ]/g, 'd');
+	// Xóa ký tự đặc biệt
+	str = str.replace(/([^0-9a-z-\s])/g, '');
+	// Xóa khoảng trắng thay bằng ký tự -
+	str = str.replace(/(\s+)/g, '-');
+	// Xóa ký tự - liên tiếp
+	str = str.replace(/-+/g, '-');
+	// xóa phần dư - ở đầu & cuối
+	str = str.replace(/^-+|-+$/g, '');
+	return str;
+}
+
 authController.loginWithGoogle = catchAsync(async (req, res, next) => {
   const {idToken} = req.body
   console.log("idToken", idToken)
@@ -24,7 +44,8 @@ authController.loginWithGoogle = catchAsync(async (req, res, next) => {
     { email, 
       name,
       googleId: sub,
-      avatarUrl:picture
+      avatarUrl:picture,
+      displayName: toSlug(name)
     }) 
   const accessToken = await user.generateToken()
 
@@ -55,7 +76,8 @@ authController.loginWithFacebook = catchAsync(async (req, res, next) => {
     { email, 
       name,
       facebookId: id,
-      avatarUrl: url
+      avatarUrl: url,
+      displayName: toSlug(name)
     }) 
   const accessToken = await user.generateToken()
 

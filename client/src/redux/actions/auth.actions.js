@@ -25,6 +25,7 @@ const loginFacebookRequest = (userId,access_token) => async (dispatch) => {
     const name = res.data.data.user.name;
     toast.success(`Welcome ${name}`);
     dispatch({ type: types.LOGIN_FACEBOOK_SUCCESS, payload: res.data.data });
+    console.log("accesstoken", res.data.data.accessToken)
     api.defaults.headers.common["authorization"] =
       "Bearer " + res.data.data.accessToken;
   } catch (error) {
@@ -89,7 +90,7 @@ const getCurrentUser = (accessToken) => async (dispatch) => {
   }
   try {
     const res = await api.get("/users/me");
-    dispatch({ type: types.GET_CURRENT_USER_SUCCESS, payload: res.data });
+    dispatch({ type: types.GET_CURRENT_USER_SUCCESS, payload: res.data.data });
   } catch (error) {
     dispatch({ type: types.GET_CURRENT_USER_FAILURE, payload: error });
   }

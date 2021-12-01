@@ -9,12 +9,20 @@ const {
 const postController = {};
 
 postController.create = catchAsync(async (req, res) => {
-  const post = await Post.create({ owner: req.userId, ...req.body });
+  const {body, imageUrl} = req.body
+  console.log(imageUrl)
+  let post
+  if(!imageUrl) {
+    post = await Post.create({ owner: req.userId, body});
+  } else {
+    post = await Post.create({ owner: req.userId, body, imageUrl});
+  }
   res.json(post);
 });
 
 postController.read = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({ _id: req.params.id });
+  console.log(post)
   if (!post)
     return next(new AppError(404, "Post not found", "Get Single Post Error"));
 
@@ -51,7 +59,16 @@ postController.destroy = catchAsync(async (req, res) => {
 });
 
 postController.list = catchAsync(async (req, res) => {
-  const posts = await Post.find({}).populate("owner");
+  let { page, limit, sortBy, ...filter } = { ...req.query };
+  page = parseInt(page) || 1;
+  limit = parseInt(limit) || 1;
+  const totalPosts = await Post.count({ ...filter });
+    const totalPages = Math.ceil(totalPosts / limit);
+    const offset = limit * (page - 1);
+    const posts = await Post.find(filter)
+      .sort({ ...sortBy, createdAt: -1 })
+      .skip(offset)
+      .limit(limit);
   return sendResponse(res, 200, true, { posts }, null, "Received posts");
 });
 

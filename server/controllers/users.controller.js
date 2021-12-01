@@ -32,22 +32,38 @@ userController.create = catchAsync(async (req, res, next) => {
   );
 })
 
-userController.read = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
+userController.readUser = async (req, res) => {
+  const {displayName} = req.params
+
+  const user = await User.findOne({ displayName }).lean();
   if (!user) {
     res.status(404).json({ message: "User not Found" });
   } else {
-    res.json(user);
+    return sendResponse(
+    res,
+    200,
+    true,
+    user,
+    null,
+    "Get Single User"
+  );
   }
 };
 
 userController.readCurrentUser = async (req, res) => {
   const userId = req.userId
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).lean();
   if (!user) {
     res.status(404).json({ message: "User not Found" });
   } else {
-    res.json(user);
+    return sendResponse(
+    res,
+    200,
+    true,
+    user,
+    null,
+    "Get User me"
+  );
   }
 };
 

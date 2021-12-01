@@ -6,17 +6,51 @@ import "./style.css";
 
 import Composer from "../../components/Composer/Composer";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../../redux/actions";
+import { authActions, postActions, userActions } from "../../redux/actions";
+import { useParams } from "react-router";
+import Post from "../../components/Post";
 
 export default function ProfilePage() {
-  const user = useSelector(state => state.auth.user)
   const dispatch = useDispatch()
-  useEffect(() => {
-    //function to get data of the current user, using the token in the local storage
-    //api to get current user
-    dispatch(authActions.getCurrentUser())
-  }, [])
 
+  //take the param from address bar, displayName or slug
+  const params = useParams()
+  const {name} = params //name aka slug
+
+  //login user
+  const user = useSelector(state => state.auth.user)
+
+  //user that match with the slug: other user
+  const otherUser = useSelector(state => state.user.otherUser)
+
+  //all the posts display on profile page (related to the slug's user)
+  const posts = useSelector(state => state.post.posts)
+  
+  useEffect(() => {
+    if (name === user.displayName){ 
+      //true => the user === other User => get into his own profile page
+      dispatch(postActions.postsRequest(1, 10, null, user._id, null))
+    } else { 
+      //false => user != other User => user get into otherUser profile page
+      dispatch(userActions.singleUsersRequest({displayName:name}))
+      //singleUserRequest: to get other User infomation
+    }
+  }, [user])
+  useEffect(() => {
+    if(otherUser){
+      console.log("other",otherUser._id)
+      dispatch(postActions.postsRequest(1, 10, null, otherUser._id, null))
+    }
+  }, [otherUser])
+  console.log("post", posts)
+  console.log("otherUser", otherUser)
+  
+  let renderUser 
+  if (name === user.displayName){
+    renderUser = user
+  } else {
+    renderUser = otherUser
+  }
   return (
     <div>
       <Row className="centered hero">
@@ -30,9 +64,9 @@ export default function ProfilePage() {
             <img
               alt="profile"
               className="position-absolute rounded-circle cover-profile-photo"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+              src={renderUser?.avatarUrl}
             />
-            <h3>{user.name}</h3>
+            <h3>{renderUser?.name}</h3>
           </div>
         </Container>
         <hr className="w-75" />
@@ -99,34 +133,11 @@ export default function ProfilePage() {
             <h1>Sidebar</h1>
           </Col>
           <Col xs={7} className="posts-col">
-            <Composer />
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
+            {name === user.displayName?<Composer type="profile"/>:null}
+            {
+            posts && 
+              posts.map((p)=><Post key={p._id} {...p} />)
+          }
           </Col>
         </Container>
       </Row>

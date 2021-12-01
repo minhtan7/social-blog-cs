@@ -12,6 +12,7 @@ const postSchema = Schema(
       required: true,
       type: Schema.Types.ObjectId,
     },
+    imageUrl: {type: String, default:"https://i.picsum.photos/id/244/600/600.jpg?hmac=OeAzRT1ePNH0wsvaO680ILDE0pSs4gc0l9phxsXicnc"}
   },
   {
     timestamps: true,

@@ -9,6 +9,7 @@ import { Container } from "react-bootstrap";
 import PublicNavbar from "../components/PublicNavbar";
 import AlertMsg from "./layouts/AlertMsg";
 import ProfilePage from "../pages/ProfilePage";
+import { useSelector } from "react-redux";
 
 const PublicLayout = ()=>{
   return (
@@ -35,6 +36,7 @@ const AdminLayout = ()=>{
 
 
 const AllRoutes = () => {
+  const user = useSelector(state => state.auth.user)
   return (
     <Routes>
       <Route path="/" element={<PublicLayout/>} >

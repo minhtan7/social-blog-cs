@@ -69,7 +69,7 @@ export default function HomePage() {
         id="scrollingElement"
         className="d-flex flex-column align-items-center posts-container"
       >
-        <Composer />
+        <Composer type="homepage" />
           {
             posts && 
               posts.map((p)=><Post key={p._id} {...p} />)

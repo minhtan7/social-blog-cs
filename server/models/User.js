@@ -7,6 +7,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const userSchema = Schema(
   {
     name: { type: String, required: false, unique: false, default: "" },
+    displayName:{type: String, required: true, unique: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: false, unique: false },
     avatarUrl: { type: String, required: false, default: "" },
@@ -34,6 +35,7 @@ userSchema.statics.findOrCreate = async (profile)=>{
         avatarUrl: profile.avatarUrl,
         googleId: profile.googleId,
         facebookId: profile.facebookId,
+        displayName: profile.displayName
       })
     }
     return user
