@@ -45,7 +45,7 @@ authController.loginWithGoogle = catchAsync(async (req, res, next) => {
       name,
       googleId: sub,
       avatarUrl:picture,
-      displayName: toSlug(name)
+      displayName: toSlug(name) //Tân Võ => tan-vo
     }) 
   const accessToken = await user.generateToken()
 

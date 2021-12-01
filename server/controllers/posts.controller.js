@@ -57,14 +57,18 @@ postController.destroy = catchAsync(async (req, res) => {
     }
   });
 });
-
+//"/posts?page=4&limit=10&title[$regex]=noddle&title[$options]=i"
 postController.list = catchAsync(async (req, res) => {
   let { page, limit, sortBy, ...filter } = { ...req.query };
+  //req.query = {page:1, limit: 10, title[$regex]: noddle, title[options]=i}
+
+  //filter= {title[$regex]: noddle, title[options]:i}
   page = parseInt(page) || 1;
-  limit = parseInt(limit) || 1;
+  limit = parseInt(limit) || 10;
   const totalPosts = await Post.count({ ...filter });
-    const totalPages = Math.ceil(totalPosts / limit);
+    const totalPages = Math.ceil(totalPosts / limit); //Math.floor
     const offset = limit * (page - 1);
+    // limit =10, page = 2 => offset = 10
     const posts = await Post.find(filter)
       .sort({ ...sortBy, createdAt: -1 })
       .skip(offset)

@@ -29,20 +29,22 @@ const createPost = ({body, imageUrl, userId}) => async (dispatch) => {
     dispatch({ type: types.CREATE_POST_FAILURE, payload: error });
   }
 };
-
+//postsRequest(1, 10, noddle, "abc", null)
 const postsRequest =
   (pageNum = 1, limit = 10, query = null, ownerId = null, sortBy = null) =>
   async (dispatch) => {
     dispatch({ type: types.POST_REQUEST, payload: null });
     try {
       console.log(ownerId)
-      let queryString = "";
+      let queryString = ""; 
       if (query) {
         queryString = `&title[$regex]=${query}&title[$options]=i`;
       }
+      //queryString = `&title[$regex]=noddle&title[$options]=i`
       if (ownerId) {
         queryString = `${queryString}&owner=${ownerId}`;
       }
+      //queryString = `&title[$regex]=noddle&title[$options]=i&owner=abc`
       let sortByString = "";
       if (sortBy?.key) {
         sortByString = `&sortBy[${sortBy.key}]=${sortBy.ascending}`;
@@ -50,6 +52,7 @@ const postsRequest =
       const res = await api.get(
         `/posts?page=${pageNum}&limit=${limit}${queryString}${sortByString}`,
       );
+      //"/posts?page=1&limit=10&title[$regex]=noddle&title[$options]=i"
       dispatch({
         type: types.POST_REQUEST_SUCCESS,
         payload: res.data.data.posts,
