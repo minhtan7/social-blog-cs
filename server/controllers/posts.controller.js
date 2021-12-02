@@ -5,6 +5,8 @@ const {
   catchAsync,
   sendResponse,
 } = require("../helpers/utils.helper");
+const Comment = require("../models/Comment");
+const { populate } = require("../models/Post");
 
 const postController = {};
 
@@ -26,8 +28,8 @@ postController.read = catchAsync(async (req, res, next) => {
   if (!post)
     return next(new AppError(404, "Post not found", "Get Single Post Error"));
 
-  await post.populate("owner").populate("comments");
-  await post.execPopulate();
+  await post.populate("owner").populate("comments").execPopulate();
+  // await post;
 
   res.json(post);
 });
@@ -65,15 +67,35 @@ postController.list = catchAsync(async (req, res) => {
   //filter= {title[$regex]: noddle, title[options]:i}
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 10;
-  const totalPosts = await Post.count({ ...filter });
+  const totalPosts = await Post.countDocuments({ ...filter });
     const totalPages = Math.ceil(totalPosts / limit); //Math.floor
     const offset = limit * (page - 1);
     // limit =10, page = 2 => offset = 10
     const posts = await Post.find(filter)
       .sort({ ...sortBy, createdAt: -1 })
       .skip(offset)
-      .limit(limit);
+      .limit(limit).populate("owner").populate({path:"comments", populate:"owner"})
+      // populate({path:"comments", populate:"owner"})
   return sendResponse(res, 200, true, { posts }, null, "Received posts");
+});
+
+postController.createComment = catchAsync(async (req, res) => {
+  const {body } = req.body
+  const {id} = req.params
+  const userId = req.userId
+  const comment = await Comment.create({
+    body,
+    owner: userId,
+    post: id,
+  });
+
+  const post = await Post.findById(id);
+  post.comments.push(comment._id);
+
+  await post.save();
+  await post.populate("comments");
+  await post.execPopulate();
+  return sendResponse(res, 200, true, { comment }, null, "Create comment");
 });
 
 module.exports = postController;

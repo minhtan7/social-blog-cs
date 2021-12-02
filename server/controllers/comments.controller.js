@@ -6,19 +6,31 @@ const {
   catchAsync,
   sendResponse,
 } = require("../helpers/utils.helper");
+const Post = require("../models/Post");
+
 
 const commentsController = {};
 
 commentsController.create = catchAsync(async (req, res) => {
+  const {body, postId} = req.body
+  const userId = req.userId
   const comment = await Comment.create({
-    owner: req.userId,
-    body: req.body.body,
-    post: req.body.postId,
+    owner: userId,
+    body: body,
+    post: postId,
   });
 
   // Here we'd need to update the post as well.
+  
 
-  res.json(comment);
+  return sendResponse(
+    res,
+    200,
+    true,
+    comment,
+    null,
+    "New comment created"
+  );
 });
 
 commentsController.read = async (req, res) => {
@@ -28,7 +40,14 @@ commentsController.read = async (req, res) => {
   if (!comment) {
     res.status(404).json({ message: "Comment not found." });
   } else {
-    res.json(comment);
+    return sendResponse(
+    res,
+    200,
+    true,
+    comment,
+    null,
+    "Get Single Comment"
+  );
   }
 };
 

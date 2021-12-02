@@ -9,5 +9,10 @@ router.get("/", authMiddleware.loginRequired, postsController.list);
 router.get("/:id", postsController.read);
 router.put("/:id", postsController.update);
 router.delete("/:id", postsController.destroy);
+router.post(
+  "/:id/comments",
+  authMiddleware.loginRequired,
+  postsController.createComment
+);
 
 module.exports = router;

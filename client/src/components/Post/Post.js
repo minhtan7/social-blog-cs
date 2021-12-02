@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Col,
   Form,
@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./style.css";
 
 import avatar from "../../assets/avatar.png";
+import { useDispatch, useSelector } from "react-redux";
+import { postActions } from "../../redux/actions";
 
 const COMMENTS = [
   {
@@ -48,13 +50,32 @@ const COMMENTS = [
 ];
 
 const Avatar = (props) => {
-  return <img alt="profile" className="rounded-circle" src={avatar} />;
+  return <img alt="profile" className="rounded-circle" src={props.url} />
 };
 
 /* STEP 4 */
-const CommentForm = () => {
+const CommentForm = (props) => {
+  const [comment, setComment] = useState("");
+  const dispatch = useDispatch()
+ const handleOnChange= (e)=>{
+   setComment(e.target.value)
+  }
+  const user = useSelector(state => state.auth.user)
+  const otherUser = useSelector(state => state.user.otherUser)
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(props.type ==="user" && user.displayName===otherUser?.displayName){
+      dispatch(postActions.createComment(props.postId, comment, user._id));
+    } else if( props.type ==="user" && user.displayName!==otherUser?.displayName){
+      dispatch(postActions.createComment(props.postId, comment, otherUser?._id));
+    } else if (props.type === "home"){
+      dispatch(postActions.createComment(props.postId, comment, null));
+    }
+};
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Row>
         <Col className="d-flex">
           <Form.Control
@@ -62,6 +83,7 @@ const CommentForm = () => {
             type="text"
             placeholder="Write a comment..."
             className="border-0 rounded-md bg-light"
+            onChange={handleOnChange}
           />
         </Col>
       </Form.Row>
@@ -69,21 +91,46 @@ const CommentForm = () => {
   );
 };
 
-const Comment = ({ body, user }) => {
+const Comment = ({ body, owner }) => {
+  const user = useSelector(state => state.auth.user)
+  const [edit, setEdit] = useState(body)
+  const [show, setShow] = useState(false)
+  const openEdit =()=>{
+    setShow(!show)
+  }
+  const handleKeyDown =(e)=>{
+    if(e.which===13){
+      console.log(edit)
+    }
+  }
   return (
     <ListGroupItem className="justify-content-start border-bottom-0 pr-0 py-0">
-      <Avatar url={user.avatarUrl} />
-      <div className="col">
+      <Avatar url={owner.avatarUrl} />
+      <div className="col comment-bubble-wrap">
         <div className="comment-bubble">
-          <div className="font-weight-bold">{user.name}</div>
+          <div className="font-weight-bold">{owner.name}</div>
           <p>{body}</p>
+          {
+            user.displayName===owner.displayName? (
+            <div className="edit-icon" >
+              <FontAwesomeIcon icon="edit" size="sm" onClick={openEdit}/>
+              <FontAwesomeIcon icon="times" size="sm" />
+            </div>
+            ) : null
+          }
+          <div className={show?"edit-form show":"edit-form"}>
+            <input value={edit} onChange={(e)=>setEdit(e.target.value)} onKeyDown={handleKeyDown}/>
+          </div>
+          
         </div>
+
       </div>
     </ListGroupItem>
   );
 };
 
 const PostComments = (props) => {
+  
   return (
     <Card.Body>
       <ListGroup className="list-group-flush">
@@ -136,9 +183,10 @@ const PostReactions = () => {
 };
 
 function PostHeader({userWhoCreatedPost}) {
+  console.log(userWhoCreatedPost)
   return (
     <div className="d-flex align-items-center p-3">
-      <Avatar url="https://scontent.fsgn5-6.fna.fbcdn.net/v/t1.0-1/p480x480/13924881_10105599279810183_392497317459780337_n.jpg?_nc_cat=109&ccb=3&_nc_sid=7206a8&_nc_ohc=uI6aGTdf9vEAX8-Aev9&_nc_ht=scontent.fsgn5-6.fna&tp=6&oh=e8b18753cb8aa63937829afe3aa916a7&oe=6064C685" />
+      <Avatar url={userWhoCreatedPost.avatarUrl}  />
       <h3 className="font-weight-bold ml-3">
         {userWhoCreatedPost.name}
       </h3>
@@ -159,8 +207,8 @@ export default function Post(props) {
       <hr className="my-1" />
       <PostActions />
       <hr className="mt-1" />
-      <PostComments comments={COMMENTS} />
-      <CommentForm />
+      <PostComments comments={props.comments} />
+      <CommentForm postId={props._id} type={props.type}/>
     </Card>
   );
 }

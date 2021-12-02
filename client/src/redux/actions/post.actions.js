@@ -108,7 +108,7 @@ const deletePost = (postId) => async (dispatch) => {
   }
 };
 
-const createComment = (postId, body) => async (dispatch) => {
+const createComment = (postId, body, userId) => async (dispatch) => {
   try {
     const res = await api.post(`/posts/${postId}/comments`, {
       body,
@@ -117,7 +117,11 @@ const createComment = (postId, body) => async (dispatch) => {
       type: types.CREATE_COMMENT_SUCCESS,
       payload: res.data.data,
     });
-  } catch (error) {}
+    dispatch(postActions.postsRequest(1,10, null, userId, null))
+
+  } catch (error) {
+    dispatch({ type: types.CREATE_COMMENT_FAILURE, payload: error });
+  }
 };
 
 const createReaction =

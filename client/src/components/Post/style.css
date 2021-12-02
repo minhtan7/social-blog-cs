@@ -23,3 +23,25 @@
 .comment-bubble > p {
   margin-bottom: 0rem;
 }
+.edit-icon{
+  position: absolute;
+  right: 0;
+  top:0;
+  opacity: 0;
+}
+
+.comment-bubble-wrap:hover .edit-icon{
+  opacity: 1;
+  cursor: pointer;
+}
+.edit-form.show{
+  max-height: fit-content;
+  opacity: 1;
+  transition-duration: 0.2s;
+
+}
+.edit-form{
+  opacity: 0;
+  max-height: 0;
+  transition-duration: 0.2s;
+}

@@ -1,4 +1,5 @@
 import * as types from "../constants/user.constants";
+import * as typesAuth from "../constants/auth.constants";
 import { conversationTypes } from "../../config/constants";
 
 const globalConversation = {
@@ -107,7 +108,8 @@ const userReducer = (state = initialState, action) => {
         loading: false,
         users: [...state.users.filter((user) => user._id !== payload.targetId)],
       };
-
+    case typesAuth.LOGOUT:
+      return {...state, otherUser:null}
     default:
       return state;
   }

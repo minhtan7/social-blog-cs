@@ -136,7 +136,7 @@
               {name === user.displayName?<Composer type="profile"/>:null}
               {
               posts && 
-                posts.map((p)=><Post key={p._id} {...p} />)
+                posts.map((p)=><Post key={p._id} {...p} type="user" />)
             }
             </Col>
           </Container>

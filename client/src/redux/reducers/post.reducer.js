@@ -24,6 +24,10 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state, posts: payload
       }
+    case types.CREATE_COMMENT_SUCCESS:
+      return {
+        ...state, 
+      }
 
     case types.CREATE_POST_SUCCESS:
     case types.CREATE_POST_FAILURE:

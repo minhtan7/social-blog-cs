@@ -39,7 +39,7 @@ import {
   faPhotoVideo,
   faComment,
   faShare,
-  faSmile,
+  faSmile, faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 import { fab, faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
@@ -78,7 +78,7 @@ library.add(
   faPhotoVideo,
   faComment,
   faShare,
-  faSmile
+  faSmile,faTimes
 );
 
 function App() {
