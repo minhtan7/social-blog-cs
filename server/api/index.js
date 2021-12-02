@@ -13,4 +13,8 @@ router.use('/posts', postsRouter)
 var commentsRouter = require("./comments.api");
 router.use('/comments', commentsRouter)
 
+
+var reactionsRouter = require("./reaction.api");
+router.use('/reactions', reactionsRouter)
+
 module.exports = router;
