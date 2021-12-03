@@ -6,7 +6,14 @@ const postSchema = Schema(
   {
     body: { type: String, unique: false, default: "" },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    reactions: [{ type: Schema.Types.ObjectId, ref: "Reaction" }],
+    reactions: {
+      laugh: { type: Number, default: 0 },
+      sad: { type: Number, default: 0 },
+      like: { type: Number, default: 0 },
+      heart: { type: Number, default: 0 },
+      angry: { type: Number, default: 0 },
+      care: { type: Number, default: 0 },
+    },
     owner: {
       ref: "User",
       required: true,

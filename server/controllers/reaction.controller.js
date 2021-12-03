@@ -13,11 +13,13 @@ const Reaction = require("../models/Reaction");
 const reactionsController = {};
 
 reactionsController.create = catchAsync(async (req, res, next) => {
-  const { reactionableType, reactionableId, emoji } = req.body;
-    //reactionableType: "Post"
-    // reactionableId: "fdfdsfds"
+  const { reactionableType, reactionableId, type } = req.body; 
+  //reactionableType: Post, reactionableId: abc, type: heart
 
+//find the document with the id: reactionableId in the collections reactionableType
   const targetObj = await mongoose.model(reactionableType).findById(reactionableId);
+  //targetObj = <post>
+
   if (!targetObj)
     return next(
       new AppError(404, `${reactionableType} not found`, "Create Reaction Error")
@@ -29,27 +31,37 @@ reactionsController.create = catchAsync(async (req, res, next) => {
     reactionableId,
     owner: req.userId,
   });
-  console.log('reaction', reaction)
+
+  //one user only can only have one reaction to a single post at a time
+
   let message = "";
   if (!reaction) {
-    await Reaction.create({ reactionableType, reactionableId, owner: req.userId, type:emoji });
+    //there is no reaction just yet, create a new reaction
+    await Reaction.create({ reactionableType, reactionableId, owner: req.userId, type });
     message = "Added reaction";
+
     
   } else {
-    if (reaction.emoji === emoji) {
+    //there is a reaction from this user to this post, we're gonna check
+    //if type of the old reaction === the type of reaction we send from the FE by now
+    if (reaction.type === type) {
       await Reaction.findOneAndDelete({ _id: reaction._id });
       message = "Removed reaction";
+      // => delete that reaction
     } else {
-      await Reaction.findOneAndUpdate({ _id: reaction._id }, { type: emoji });
+    //if type of the old reaction !== the type of reaction we send from the FE by now
+      await Reaction.findOneAndUpdate({ _id: reaction._id }, { type: type });
+      //update the type of the old reaction
       message = "Updated reaction";
     }
   }
+
   // Get the updated number of reactions in the reactionableType
   const reactionStat = await mongoose
-    .model(reactionableType)
-    .findById(reactionableId, "reactions");
-    console.log(reactionStat)
+    .model(reactionableType).findById(reactionableId)
+
   return sendResponse(res, 200, true, reactionStat.reactions, null, message);
+  
 });
 
 
